@@ -1,0 +1,5 @@
+rootProject.name = 'myoffice-document'
+include 'myoffice-document-domain'
+include 'myoffice-document-rest'
+include 'myoffice-document-ui'
+

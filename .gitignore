@@ -1,0 +1,8 @@
+**/out/
+**/*.iml
+.idea/
+.gradle/
+**/build/
+**/node_modules/
+/myoffice-document-ui/src/main/resources/static/
+/myoffice-document-ui/frontend/coverage/
