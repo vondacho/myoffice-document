@@ -17,7 +17,7 @@ import java.util.UUID;
 @RequiredArgsConstructor(staticName = "of")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Template extends JpaAuditableEntity {
+public class Document extends JpaAuditableEntity {
 
     @NotNull
     @NonNull
@@ -25,11 +25,11 @@ public class Template extends JpaAuditableEntity {
 
     @NotNull
     @NonNull
-    String name;
+    UUID templateId;
 
     @NotNull
     @NonNull
     @Basic(fetch= FetchType.LAZY)
     @Lob
-    String content;
+    byte[] content;
 }
