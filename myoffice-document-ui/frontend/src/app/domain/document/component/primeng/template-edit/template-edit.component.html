@@ -1,0 +1,22 @@
+<p-growl [value]="messages"></p-growl>
+
+<form #form="ngForm">
+
+  <input type="text" size="30" name="name" [(ngModel)]="template.name" pInputText>
+
+  <ckeditor
+    name="content"
+    [(ngModel)]="template.content"
+    [config]="{language:'fr'}"
+    [readonly]="false"
+    (change)="onChange($event)"
+    (ready)="onReady($event)"
+    (focus)="onFocus($event)"
+    (blur)="onBlur($event)">
+  </ckeditor>
+
+  <p-splitButton label="Enregistrer"
+                 icon="fa-check"
+                 (onClick)="save(form.value)"
+                 [model]="buttonItems"></p-splitButton>
+</form>

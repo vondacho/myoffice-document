@@ -20,8 +20,7 @@ import java.util.UUID;
 public class Template extends JpaAuditableEntity {
 
     @NotNull
-    @NonNull
-    UUID id;
+    UUID id = UUID.randomUUID();
 
     @NotNull
     @NonNull

@@ -1,0 +1,35 @@
+<p-growl [value]="messages"></p-growl>
+
+<p-dataTable #dt
+             [value]="elements"
+             [responsive]="true"
+             [lazy]="true"
+             [first]="page.number"
+             [rows]="page.size"
+             [totalRecords]="page.totalElements"
+             (onLazyLoad)="handleLoadLazy($event)"
+             (onEditComplete)="handleEditComplete($event)"
+             paginator="true"
+             alwaysShowPaginator="false"
+             [rowsPerPageOptions]="[5,10,20]"
+             [editable]="true"
+             dataKey="id">
+  <p-column field="name"
+            header="Nom"
+            sortable="true"
+            [filter]="true"
+            filterPlaceholder="Filtre"
+            [editable]="true"></p-column>
+  <p-column>
+    <ng-template let-template="rowData" pTemplate="body">
+      <p-splitButton label="Modifier" icon="fa-check" (onClick)="edit(template.id)"
+                     [model]="buttonItems">
+      </p-splitButton>
+    </ng-template>
+  </p-column>
+  <ng-template pTemplate="emptymessage">
+    Aucun enregistrement
+  </ng-template>
+</p-dataTable>
+
+<button pButton type="button" icon="fa-new" iconPos="left" label="Nouveau"(click)="new()"></button>
