@@ -1,0 +1,1 @@
+web: java -D$JAVA_OPTS -jar myoffice-document-ui/build/libs/myoffice-document-ui-0.0.1.jar --server.port=$PORT --spring.profiles.active=inmemory,sampledata
