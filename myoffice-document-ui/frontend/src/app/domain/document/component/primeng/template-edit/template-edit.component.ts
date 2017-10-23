@@ -40,15 +40,13 @@ export class TemplateEditComponent implements OnInit {
       this.client.modify$(this.template.id, _.omit(value, ['_links', 'id']))
         .subscribe(template => {
           this.template = template;
-          this.messages = [];
-          this.messages.push({severity:'info', summary:'Success', detail:'Data modified'});
+          this.notifyOnly({severity:'info', summary:'Success', detail:'Data modified'});
         });
     } else {
       this.client.create$(value)
         .subscribe(template => {
           this.template = template;
-          this.messages = [];
-          this.messages.push({severity:'info', summary:'Success', detail:'Data created'});
+          this.notifyOnly({severity:'info', summary:'Success', detail:'Data created'});
         });
     }
   }
@@ -71,11 +69,14 @@ export class TemplateEditComponent implements OnInit {
 
   private delete() {
     this.client.delete$(this.template.id)
-      .subscribe(() => {
-        this.template = new Template();
-        this.messages = [];
-        this.messages.push({severity: 'info', summary: 'Success', detail: 'Data deleted'});
-      });
+      .subscribe(
+        () => {
+          this.template = new Template();
+          this.notifyOnly({severity: 'success', summary: 'Success', detail: 'Data deleted'})
+        },
+        () => {
+          this.notifyOnly({severity: 'error', summary: 'Echec', detail: 'Data not deleted'});
+        });
   }
 
   private initButtons() {
@@ -84,5 +85,16 @@ export class TemplateEditComponent implements OnInit {
         this.delete();
       }}
     ];
+  }
+
+  private notify(...restOfMessages: any[]) {
+    restOfMessages.forEach(m => {
+      this.messages.push(m);
+    })
+  }
+
+  private notifyOnly(...restOfMessages: any[]) {
+    this.messages = [];
+    this.notify(restOfMessages);
   }
 }

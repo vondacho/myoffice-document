@@ -13,6 +13,9 @@
              alwaysShowPaginator="false"
              [rowsPerPageOptions]="[5,10,20]"
              [editable]="true"
+             selectionMode="single"
+             [(selection)]="selection"
+             [contextMenu]="cm"
              dataKey="id">
   <p-column field="name"
             header="Nom"
@@ -20,16 +23,11 @@
             [filter]="true"
             filterPlaceholder="Filtre"
             [editable]="true"></p-column>
-  <p-column>
-    <ng-template let-template="rowData" pTemplate="body">
-      <p-splitButton label="Modifier" icon="fa-check" (onClick)="edit(template.id)"
-                     [model]="buttonItems">
-      </p-splitButton>
-    </ng-template>
-  </p-column>
   <ng-template pTemplate="emptymessage">
     Aucun enregistrement
   </ng-template>
 </p-dataTable>
+
+<p-contextMenu #cm [model]="contextMenu"></p-contextMenu>
 
 <button pButton type="button" icon="fa-new" iconPos="left" label="Nouveau"(click)="new()"></button>

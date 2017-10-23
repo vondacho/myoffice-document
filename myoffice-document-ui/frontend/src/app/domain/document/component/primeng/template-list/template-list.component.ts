@@ -25,9 +25,9 @@ interface EditCompleteEvent {
 export class TemplateListComponent implements OnInit {
 
   messages: Message[] = [];
-  buttonItems: MenuItem[];
+  contextMenu: MenuItem[];
   elements: Template[];
-  selection: Template[];
+  selection: Template;
   page: Page;
 
   constructor(private client: TemplateClient,
@@ -64,10 +64,14 @@ export class TemplateListComponent implements OnInit {
 
   delete(id: string) {
     this.client.delete$(id)
-      .subscribe(() => {
-        this.messages = [];
-        this.messages.push({severity: 'info', summary: 'Success', detail: 'Data deleted'});
-      });
+      .subscribe(
+        () => {
+          this.notifyOnly({severity: 'success', summary: 'Success', detail: 'Data deleted'});
+          this.loadTemplates(0, this.page.size);
+        },
+        () => {
+          this.notifyOnly({severity: 'error', summary: 'Echec', detail: 'Data not deleted'});
+        });
   }
 
   new() {
@@ -92,17 +96,25 @@ export class TemplateListComponent implements OnInit {
         },
         () => {
           this.initElements();
-        }
-      );
+        });
   }
 
   private initButtons() {
-    this.buttonItems = [
-      {label: 'Delete', icon: 'fa-close', command: (event) => {
-        console.log(_.values(event))
-        this.delete(event);
-      }}
+    this.contextMenu = [
+      {label: 'View', icon: 'fa-search', command: (event) => this.edit(this.selection.id)},
+      {label: 'Delete', icon: 'fa-close', command: (event) => this.delete(this.selection.id)}
     ];
+  }
+
+  private notify(...restOfMessages: any[]) {
+    restOfMessages.forEach(m => {
+      this.messages.push(m);
+    })
+  }
+
+  private notifyOnly(...restOfMessages: any[]) {
+    this.messages = [];
+    this.notify(restOfMessages);
   }
 
 }

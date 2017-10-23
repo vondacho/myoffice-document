@@ -7,7 +7,6 @@ allprojects {
         mavenLocal()
         maven {
             url myMavenRepoReadUrl
-
             credentials {
                 username myMavenRepoReadUsername
                 password myMavenRepoReadPassword
@@ -56,6 +55,7 @@ subprojects {
     }
     publishing {
         repositories {
+            mavenLocal()
             maven {
                 url myMavenRepoWriteUrl
                 credentials {
