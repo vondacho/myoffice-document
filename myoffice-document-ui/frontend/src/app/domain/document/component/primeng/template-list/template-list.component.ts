@@ -66,11 +66,11 @@ export class TemplateListComponent implements OnInit {
     this.client.delete$(id)
       .subscribe(
         () => {
-          this.notifyOnly({severity: 'success', summary: 'Success', detail: 'Data deleted'});
+          this.showSuccess();
           this.loadTemplates(0, this.page.size);
         },
         () => {
-          this.notifyOnly({severity: 'error', summary: 'Echec', detail: 'Data not deleted'});
+          this.showError();
         });
   }
 
@@ -117,4 +117,13 @@ export class TemplateListComponent implements OnInit {
     this.notify(restOfMessages);
   }
 
+  showError(message: string = 'An error occurred when performing the operation') {
+    this.messages = [];
+    this.messages.push({severity:'warn', summary:'Warning', detail:message});
+  }
+
+  showSuccess(message: string = 'The operation has been performed successfully') {
+    this.messages = [];
+    this.messages.push({severity:'success', summary:'Success', detail:message});
+  }
 }

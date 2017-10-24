@@ -40,13 +40,19 @@ export class TemplateEditComponent implements OnInit {
       this.client.modify$(this.template.id, _.omit(value, ['_links', 'id']))
         .subscribe(template => {
           this.template = template;
-          this.notifyOnly({severity:'info', summary:'Success', detail:'Data modified'});
+          this.showSuccess();
+        },
+        (error) => {
+          this.showError();
         });
     } else {
       this.client.create$(value)
         .subscribe(template => {
           this.template = template;
-          this.notifyOnly({severity:'info', summary:'Success', detail:'Data created'});
+          this.showSuccess();
+        },
+        (error) => {
+          this.showError();
         });
     }
   }
@@ -67,16 +73,9 @@ export class TemplateEditComponent implements OnInit {
 
   }
 
-  private delete() {
-    this.client.delete$(this.template.id)
-      .subscribe(
-        () => {
-          this.template = new Template();
-          this.notifyOnly({severity: 'success', summary: 'Success', detail: 'Data deleted'})
-        },
-        () => {
-          this.notifyOnly({severity: 'error', summary: 'Echec', detail: 'Data not deleted'});
-        });
+  showError(message: string = 'An error occurred when performing the operation') {
+    this.messages = [];
+    this.messages.push({severity:'warn', summary:'Warning', detail:message});
   }
 
   private initButtons() {
@@ -96,5 +95,22 @@ export class TemplateEditComponent implements OnInit {
   private notifyOnly(...restOfMessages: any[]) {
     this.messages = [];
     this.notify(restOfMessages);
+  }
+
+  showSuccess(message: string = 'The operation has been performed successfully') {
+    this.messages = [];
+    this.messages.push({severity:'success', summary:'Success', detail:message});
+  }
+
+  private delete() {
+    this.client.delete$(this.template.id)
+      .subscribe(
+        () => {
+          this.template = new Template();
+          this.showSuccess();
+        },
+        (error) => {
+          this.showError();
+        });
   }
 }
